@@ -11,8 +11,6 @@ This is important because there is no risk of spend more than expected with clou
 - Virtual Networking (Connectivity, Security, Delivery, Monitoring)
 - Storage (Blobs, queues, tables, files - hot, cool and archive tiers)
 - Microservices (Servive Fabric, Functions, Logic Apps, API's, AKS)
-<br>
-<br>
 
 ## Networking - Connectivity
 - Virtual Network (VNet)
