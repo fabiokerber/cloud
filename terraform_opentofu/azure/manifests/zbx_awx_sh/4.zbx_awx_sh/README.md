@@ -1,0 +1,1 @@
+# ZBX_AWX_SH RHEL 7.8 - AZURE
