@@ -1,0 +1,10 @@
+---
+
+packages:
+  - make
+  - gcc
+  - perl-core
+  - pcre-devel
+  - zlib-devel
+
+...

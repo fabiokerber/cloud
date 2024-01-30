@@ -1,0 +1,149 @@
+---
+
+- name: OPERATING SYSTEM | Set timezone America/Sao_Paulo
+  community.general.timezone:
+    name: America/Sao_Paulo
+
+- name: OPERATING SYSTEM | Update system
+  yum:
+    name: "*"
+    state: latest
+
+- name: OPERATING SYSTEM | Install common packages
+  yum:
+    name: "{{ packages }}"
+    state: latest
+
+- name: OPERATING SYSTEM | Stop and disable Firewalld
+  ansible.builtin.systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: OPERATING SYSTEM | Disable Selinux
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name: OPERATING SYSTEM | Disable Selinux into /etc/selinux/config
+  ansible.builtin.lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=permissive
+
+- name: OPERATING SYSTEM | Download openssl v1.1.1
+  ansible.builtin.unarchive:
+    src: https://ftp.openssl.org/source/old/1.1.1/openssl-1.1.1j.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: OPERATING SYSTEM | Install openssl v1.1.1
+  ansible.builtin.shell: ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib no-shared zlib-dynamic
+  args:
+    chdir: /tmp/openssl-1.1.1j/
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: OPERATING SYSTEM | Config and install openssl v1.1.1 [1]
+  ansible.builtin.shell: ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib no-shared zlib-dynamic
+  args:
+    chdir: /tmp/openssl-1.1.1j/
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: OPERATING SYSTEM | Config and install openssl v1.1.1 [2]
+  ansible.builtin.shell: make
+  args:
+    chdir: /tmp/openssl-1.1.1j/
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: OPERATING SYSTEM | Config and install openssl v1.1.1 [3]
+  ansible.builtin.shell: make install
+  args:
+    chdir: /tmp/openssl-1.1.1j/
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: OPERATING SYSTEM | Config and install openssl v1.1.1 [3]
+  ansible.builtin.shell: echo "export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64" >> ~/.bashrc
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: AWX | Install/Configure K3s
+  shell: "{{ item }}"
+  with_items:
+    - curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644
+
+- name: AWX | Create folders 
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /usr/local/src/awx-operator
+    - /usr/local/src/awx-on-k3s
+    - /data/postgres
+    - /data/projects
+
+- name: AWX | Clone repo AWX-OPERATOR
+  ansible.builtin.git:
+    repo: 'https://github.com/ansible/awx-operator.git'
+    dest: /usr/local/src/awx-operator
+    version: 0.20.0
+
+- name: AWX | Clone repo AWX-ON-K3S
+  ansible.builtin.git:
+    repo: 'https://github.com/kurokobo/awx-on-k3s.git'
+    dest: /usr/local/src/awx-on-k3s
+
+- name: AWX | Deploy awx-operator
+  ansible.builtin.shell: make deploy
+  args:
+    chdir: /usr/local/src/awx-operator
+  environment:
+    NAMESPACE: awx
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: AWX | Create certificate
+  ansible.builtin.shell: openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -out ./base/tls.crt -keyout ./base/tls.key -subj "/CN=${AWX_HOST}/O=${AWX_HOST}" -addext subjectAltName="DNS:${AWX_HOST}"
+  args:
+    chdir: /usr/local/src/awx-on-k3s
+  environment:
+    AWX_HOST: vmawxbrsh.brazilsouth.cloudapp.azure.com
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: AWX | Set hostname
+  ansible.builtin.lineinfile:
+    path: /usr/local/src/awx-on-k3s/base/awx.yaml
+    regexp: 'hostname: awx.example.com'
+    line: '  hostname: vmawxbrsh.brazilsouth.cloudapp.azure.com'
+
+- name: AWX | Change permission /data/projects
+  ansible.builtin.file:
+    path: /data/projects
+    owner: 1000
+    group: 0
+
+- name: AWX | Deploy awx-on-k3s
+  ansible.builtin.shell: kubectl apply -k /usr/local/src/awx-on-k3s/base
+  environment:
+    NAMESPACE: awx
+  become_method: su
+  become_exe: sudo su -
+  become_user: root
+
+- name: AWX | Pause for 30 mins to wait end of deploy
+  pause:
+    minutes: 30
+
+...

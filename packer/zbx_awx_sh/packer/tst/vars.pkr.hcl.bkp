@@ -1,0 +1,33 @@
+subscription_id = "ee6222a2-c6ac-48ae-b6ad-b7fef2589b74"
+ami_id   = "ami-6f68cf0f"
+
+variable "flavor" {
+  type = string
+  default = "strawberry"
+}
+
+variable "exit_codes" {
+  type = list(number)
+  default = [0]
+}
+
+locals {
+  ice_cream_flavor = "${var.flavor}-ice-cream"
+  foo             = "bar"
+}
+
+
+
+                "subscription_id": "ee6222a2-c6ac-48ae-b6ad-b7fef2589b74",
+                "client_id": "4b9cf9e2-ba75-48a0-b56d-ba0ab00083af",
+                "client_secret": "4V67Q~CwjR16jokWxBD--NDHM0h1l~I5TtZ~x",
+    
+                "image_publisher": "RedHat",
+                "image_offer": "RHEL",
+                "image_sku": "7.8",
+                "location": "brazilsouth",
+                "os_type": "Linux",
+                "vm_size": "Standard_B2s",
+    
+                "managed_image_name": "vm-img-b-awx-br-sh",
+                "managed_image_resource_group_name": "rg-img-br-sh"

@@ -1,0 +1,26 @@
+
+{
+    "variables" //DEFINIR AQUI POSSIVEIS VARIAVEIS PARA QUE AS CHAVES POSSAM SER INFORMADAS DURANTE O COMANDO
+}
+{
+    "builders": [{ //ONDE VAI CONTRUIR A IMAGEM
+        "type": "amazon-ebs", //ONDE FICARA HOSPEDADA A IMAGEM
+        "access_key": "ACESSKEYAWS",
+        "secret_key": "SECRETKEYAWS",
+        "region": "us-east-1",
+        "source_ami": "ami-fr54267gtjss879", //FONTE BASE DA IMAGEM
+        "instance_type": "t2.micro", //TIPO DA IMAGEM
+        "ssh_username": "ubuntu",
+        "ami_name": "ubuntu-openjdk8-{{timestamp}}" //DEFINIÇÃO DO NOME DA IMAGEM COM O TIMESTAMP LOCAL
+    }],
+    "provisioners": //PODE SER UTILIZADO ANSIBLE, PUPPET, CHEF COMO PROVISIONADORES ALÉM DO SHELL
+    [
+        {
+            "type": "shell",
+            "inline": ["sleep 30"]
+        },{
+            "type": "shell",
+            "inline": ["sudo apt-get update && sudo apt-get install -y openjdk-8-jdk"]
+        }
+    ]
+}

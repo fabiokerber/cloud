@@ -1,0 +1,8 @@
+---
+
+- name: Playbook
+  hosts: localhost
+  roles: 
+    - install_awx
+
+...
