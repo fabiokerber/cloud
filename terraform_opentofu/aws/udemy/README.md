@@ -97,12 +97,48 @@ variable "ext_port" {}
 external = var.ext_port
 
 terraform plan -var ext_port=1880 | export TF_VAR_ext_port=1880 && terraform plan
-
----
-
-
 ```
 
-## OpenTufo Example<br>
+# tfvars
+```
+terraform plan --var-file south.tfvars
+terraform plan --var-file west.tfvars
+```
+
+# Sensitive data in output
+```
+variable "ext_port" {
+  type = number
+  sensitive = true
+}
+
+output "ip-address" {
+    value = [for i in docker_container.nodered_container[*]: join(":", [i.ip_address], i.ports[*]["external"])]
+    description = "The IP address and port of the container"
+    sensitive = true
+}
+```
+
+# local-exec
+```
+resource "null_resource" "dockervol"{
+  provisioner "local-exec" {
+    command = "mkdir noderedvol/ || true && sudo chown -R 1000:1000 noderedvol/"
+  }
+}
+```
+
+# workspaces<br>
+!!Deploy distincts environments (staging, production, etc)
+```
+terraform workspace new dev
+terraform workspace new prd
+
+terraform workspace show
+terraform workspace list
+terraform workspace select dev
+```
+
+## OpenTofu Example<br>
 https://github.com/saturnhead/blog-examples/blob/main/opentofu-aks/main.tf
 
