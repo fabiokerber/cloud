@@ -105,6 +105,12 @@ terraform plan --var-file south.tfvars
 terraform plan --var-file west.tfvars
 ```
 
+# modules
+```
+"root" module
+  "image" module
+```
+
 # Sensitive data in output
 ```
 variable "ext_port" {
@@ -138,6 +144,10 @@ terraform workspace show
 terraform workspace list
 terraform workspace select dev
 ```
+
+# aws deployment<br>
+
+![alt text](20240213103855.png)
 
 ## OpenTofu Example<br>
 https://github.com/saturnhead/blog-examples/blob/main/opentofu-aks/main.tf
