@@ -146,8 +146,10 @@ terraform workspace select dev
 ```
 
 # aws deployment<br>
-
-![alt text](20240213103855.png)
+<kbd>
+    <img src="https://github.com/fabiokerber/cloud/blob/main/img/20240213103855.png">
+</kbd>
+<br />
 
 ## OpenTofu Example<br>
 https://github.com/saturnhead/blog-examples/blob/main/opentofu-aks/main.tf
