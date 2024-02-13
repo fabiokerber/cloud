@@ -45,7 +45,7 @@ Auth: Microsoft Authenticator
   30 minutes
 ```
 
-# terminal
+## terminal
 ```
 sh cloud9_disk_resize.sh
 
@@ -54,22 +54,22 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 sudo apt update && sudo apt install terraform
 ```
 
-## Terraform
+# Terraform
 
-# apply "plan file" without confirmation
+## apply "plan file" without confirmation
 ```
 terraform plan -out=plan1
 terraform apply plan1
 ```
 
-# tfstate<br>
+## tfstate<br>
 !!Should be encrypted and secure as much as possible, may be contain very sensitive info!!
 ```
 terraform state list (view all resources)
 terraform apply --auto-approve -lock=false (run one command with -lock=false and another without this parameter)
 ```
 
-# jq (view tfstate data)
+## jq (view tfstate data)
 ```
 apt install jq -y
 terraform show -json | jq
@@ -77,7 +77,7 @@ terraform apply --auto-approve
 terraform show -json | jq
 ```
 
-# terraform console
+## terraform console
 ```
 terraform state list
 terraform show | grep name
@@ -91,7 +91,7 @@ terraform console
 terraform output (some data can't be show because it didn't run terraform apply yet)
 ```
 
-# vars
+## vars
 ```
 variable "ext_port" {}
 external = var.ext_port
@@ -99,19 +99,19 @@ external = var.ext_port
 terraform plan -var ext_port=1880 | export TF_VAR_ext_port=1880 && terraform plan
 ```
 
-# tfvars
+## tfvars
 ```
 terraform plan --var-file south.tfvars
 terraform plan --var-file west.tfvars
 ```
 
-# modules
+## modules
 ```
 "root" module
   "image" module
 ```
 
-# sensitive data in output
+## sensitive data in output
 ```
 variable "ext_port" {
   type = number
@@ -125,7 +125,7 @@ output "ip-address" {
 }
 ```
 
-# local-exec
+## local-exec
 ```
 resource "null_resource" "dockervol"{
   provisioner "local-exec" {
@@ -134,7 +134,7 @@ resource "null_resource" "dockervol"{
 }
 ```
 
-# workspaces<br>
+## workspaces<br>
 !!Deploy distincts environments (staging, production, etc)
 ```
 terraform workspace new dev
