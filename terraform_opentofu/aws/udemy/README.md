@@ -1,6 +1,6 @@
 # Terraform
 
-## First Steps
+## first Steps
 ```
 - Budget
   Cost budget
@@ -33,9 +33,9 @@ Username: fabiokerber
 Auth: Microsoft Authenticator
 ```
 
-## Cloud9
+# Cloud9
 
-# Create virtual environment to use AWS through terraform<br>
+## create virtual environment to use AWS through terraform<br>
 ```
 - Create environment
   terraform
@@ -45,7 +45,7 @@ Auth: Microsoft Authenticator
   30 minutes
 ```
 
-# Terminal
+# terminal
 ```
 sh cloud9_disk_resize.sh
 
@@ -56,7 +56,7 @@ sudo apt update && sudo apt install terraform
 
 ## Terraform
 
-# Apply "plan file" without confirmation
+# apply "plan file" without confirmation
 ```
 terraform plan -out=plan1
 terraform apply plan1
@@ -111,7 +111,7 @@ terraform plan --var-file west.tfvars
   "image" module
 ```
 
-# Sensitive data in output
+# sensitive data in output
 ```
 variable "ext_port" {
   type = number
@@ -145,12 +145,14 @@ terraform workspace list
 terraform workspace select dev
 ```
 
-# aws deployment<br>
+# Aws deployment
+
+## first deployment<br>
 <kbd>
     <img src="https://github.com/fabiokerber/cloud/blob/main/img/20240213103855.png">
 </kbd>
 <br />
 
-## OpenTofu Example<br>
+# OpenTofu Example<br>
 https://github.com/saturnhead/blog-examples/blob/main/opentofu-aks/main.tf
 
