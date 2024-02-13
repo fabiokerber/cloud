@@ -1,6 +1,13 @@
-# Terraform
+# AWS
 
-## first Steps
+## install aws-cli
+```
+$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+$ unzip awscliv2.zip
+$ sudo ./aws/install
+```
+
+## first steps
 ```
 - Budget
   Cost budget
@@ -13,6 +20,9 @@
 
   80% threshold of budgeted amount (Forecasted)
 ```
+
+## IAM
+!!! create in the right region !!!
 ```
 - IAM Identity Center > Users (New user)
 	fabiokerber
@@ -47,11 +57,11 @@ Auth: Microsoft Authenticator
 
 ## terminal
 ```
-sh cloud9_disk_resize.sh
+$ sh cloud9_disk_resize.sh
 
-wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install terraform
+$ wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+$ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+$ sudo apt update && sudo apt install terraform
 ```
 
 # Terraform
@@ -135,7 +145,7 @@ resource "null_resource" "dockervol"{
 ```
 
 ## workspaces<br>
-!!Deploy distincts environments (staging, production, etc)
+!!! Deploy distincts environments (staging, production, etc) !!!
 ```
 terraform workspace new dev
 terraform workspace new prd
@@ -145,7 +155,7 @@ terraform workspace list
 terraform workspace select dev
 ```
 
-# Aws deployment
+# AWS deployment (terraform-aws)
 
 ## first deployment<br>
 <kbd>
@@ -153,6 +163,74 @@ terraform workspace select dev
 </kbd>
 <br />
 
-# OpenTofu Example<br>
-https://github.com/saturnhead/blog-examples/blob/main/opentofu-aks/main.tf
+# Hashicorp Terraform cloud
+!!! state files managenment !!!
+```
+username: fabiokerber
+email: fabio.kerber@gmail.com
+URL: https://app.terraform.io/
 
+- Create new organization (this is different of terraform workspace concept)
+  fks-course-terraform
+
+- Workflow
+  CLI-driven workflow
+
+- New Workspace
+  k3s-env
+
+- backends.tf
+  terraform {
+    cloud {
+      organization = "fks-course-terraform"
+
+      workspaces {
+        name = "k3s-env"
+      }
+    }
+  }
+
+$ cd terraform-aws
+$ terraform login
+
+- User token (copy token)
+fks-course-terraform-token
+
+$ terraform init
+```
+
+## access keys
+```
+Log AWS with root user
+IAM > Create new user
+  user k3s-course-terraform
+  group full_access
+  policy AdministratorAccess
+
+Gdrive
+  root/sec_codes/AWS
+
+$ export AWS_ACCESS_KEY_ID="anaccesskey"
+$ export AWS_SECRET_ACCESS_KEY="asecretkey"
+```
+
+## vpc
+!!! "enable_dns_hostnames = true" > Provide dns hostnames for any resources deployed into a public environment !!!
+```
+- networking
+  - main.tf
+  - outputs.tf
+  - variables.tf
+```
+
+# OpenTofu Example<br>
+https://github.com/saturnhead/blog-examples/blob/main/opentofu-aks/main.tf<br>
+
+# URL's<br>
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs<br>
+
+# AWS Key<br>
+https://www.youtube.com/watch?v=yysled3Ir1o<br>
+
+# Terraform Cloud<br>
+https://developer.hashicorp.com/terraform/cloud-docs<br>
