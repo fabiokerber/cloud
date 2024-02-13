@@ -163,8 +163,8 @@ terraform workspace select dev
 </kbd>
 <br />
 
-# Hashicorp Terraform cloud
-!!! state files managenment !!!
+# Hashicorp Terraform cloud<br>
+!!! state files managenment for small deployments !!!
 ```
 username: fabiokerber
 email: fabio.kerber@gmail.com
@@ -212,14 +212,30 @@ Gdrive
 
 $ export AWS_ACCESS_KEY_ID="anaccesskey"
 $ export AWS_SECRET_ACCESS_KEY="asecretkey"
+
+$ aws configure
 ```
 
-## vpc
+## vpc<br>
 !!! "enable_dns_hostnames = true" > Provide dns hostnames for any resources deployed into a public environment !!!
 ```
+- root
+  main.tf
+
 - networking
   - main.tf
   - outputs.tf
+  - variables.tf
+```
+
+## subnets<br>
+!!! check availability zones ($ aws ec2 describe-availability-zones --region eu-north-1) !!!
+```
+- root
+  main.tf
+
+- networking
+  - main.tf
   - variables.tf
 ```
 
