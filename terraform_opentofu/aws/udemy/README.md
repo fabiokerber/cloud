@@ -199,6 +199,10 @@ $ terraform login
 - User token (copy token)
 fks-course-terraform-token
 
+- credentials.tfrc.json
+Gdrive
+  root/sec_codes/terraform token
+
 $ terraform init
 ```
 
